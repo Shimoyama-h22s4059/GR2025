@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>手書き文字予測ドラゴン</title>
+
+        <!-- CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+        <!-- JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg bg-zunda">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/index">
+                    <i class="bi-flask-fill"></i>
+                    GR2025
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/index">
+                                <i class="bi-house-fill"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/about">
+                                <i class="bi-chat-dots-fill"></i>
+                                About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="https://twitter.com/ArchWizard7">
+                                <i class="bi-twitter"></i>
+                                Twitter
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="https://github.com/MochiMochiZunda">
+                                <i class="bi-github"></i>
+                                GitHub
+                            </a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container m-3">
+            <h1>手書き文字予測ドラゴン</h1>
+            <div class="row">
+                <div id="handwritten" class="col-lg-6 col-sm-12 rounded-0 shadow p-3 mb-3">
+                    <h5>
+                        <i class="bi-pencil-fill"></i>
+                        手書き文字
+                    </h5>
+
+                    <div class="col">
+                        <canvas id="canvas-handwritten" class="border border-1 shadow-lg" width="224px" height="224px"></canvas>
+                    </div>
+
+                    <div class="col">
+                        <label for="line-width-selector">
+                            <i class="bi-pencil-fill"></i>
+                            線の太さ:
+                            <span id="line-width-value">5</span>
+                        </label>
+                        <input id="line-width-selector" class="form-range" type="range" value="5" min="1" max="10">
+                    </div>
+
+                    <button id="button-canvas-clear" class="btn btn-danger">
+                        <i class="bi-trash-fill"></i>
+                        消去する
+                    </button>
+                    <button id="button-predict" class="btn btn-success">
+                        <i class="bi-cpu-fill"></i>
+                        予測する
+                    </button>
+                </div>
+                <div id="handwritten" class="col-lg-6 col-sm-12 rounded-0 shadow p-3 mb-3">
+                    <h5>
+                        <i class="bi-check-circle-fill"></i>
+                        結果
+                    </h5>
+                    <div class="col">
+                        <canvas id="dragon" width="398" height="224"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="display: none">
+                <div id="debug" class="col-lg-6 col-sm-12 rounded-0 shadow p-3 mb-3">
+                    <h5>
+                        <i class="bi-bug-fill"></i>
+                        DEBUG
+                    </h5>
+
+                    <div class="col">
+                        <label for="debug-selector">
+                            <span id="debug-value" class="font-monospace">0</span>
+                        </label>
+                        <input id="debug-selector" class="form-range" type="range" value="0" min="0" max="9">
+                    </div>
+
+                    <button id="button-apply-debug" class="btn btn-info">
+                        <i class="bi-check-circle-fill"></i>
+                        適用
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
