@@ -10,6 +10,8 @@ valid_records = 0
 
 exclusion_bases = list("BJOUXZ")
 
+accession_numbers = []
+
 def check_valid_seq(seq):
     """
     有効なタンパク質かどうかを返す関数
@@ -33,9 +35,11 @@ for filename in filenames:
 
     with open(filename, "r", encoding="utf-8") as handle:
         for record in SeqIO.parse(handle, "fasta"):
+            accession_number = record.id.split("|")[3]
             seq = record.seq
 
-            if check_valid_seq(seq):
+            if check_valid_seq(seq) and len(accession_number) > 0:
+                accession_numbers.append(accession_number)
                 valid_records += 1
 
                 for c in seq:
@@ -44,7 +48,13 @@ for filename in filenames:
                     total_bases += 1
 
 dictionary = sorted(dictionary.items())
+accession_numbers.sort()
+accession_numbers = set(accession_numbers)
 
 print(dictionary)
 print(f"valid_records = {valid_records}")
 print(f"total_bases = {total_bases}")
+print(f"len(accession_numbers) = {len(accession_numbers)}")
+
+with open("./valid_accession_numbers.txt", "w", encoding="utf-8") as file:
+    file.write("\n".join(accession_numbers))
