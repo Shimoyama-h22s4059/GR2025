@@ -1,5 +1,6 @@
 from Bio import SeqIO
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
+from tqdm import tqdm
 
 import csv
 import os
@@ -33,7 +34,7 @@ amino_vec = {
 exclusion_bases = list("BJOUXZ")
 
 size = 224
-padding = 10
+padding = 3
 
 
 def check_valid_seq(seq):
@@ -77,6 +78,7 @@ def generate_graph(seq, accession_number, size, padding):
     :param padding: 画像のパディング
     :return:
     """
+
     x = 0
     y = 0
 
@@ -106,16 +108,17 @@ def generate_graph(seq, accession_number, size, padding):
         for point in points
     ]
 
-    img = Image.new("L", (size, size), color=0)  # (size * size) の黒画像で初期化
-    draw = ImageDraw.Draw(img)  # 描画用オブジェクト
+    base = Image.new("L", (size, size), color=0)  # (size * size) の黒画像で初期化
+    draw = ImageDraw.Draw(base)  # 描画用オブジェクト
 
     for i in range(len(mapped_points) - 1):
         start = mapped_points[i]
         end = mapped_points[i + 1]
 
-        draw.line([(start["x"], start["y"]), (end["x"], end["y"])], fill=255)
+        draw.line([(start["x"], start["y"]), (end["x"], end["y"])], fill=255, width=3)
 
-    img.save(f"./graphs/{accession_number}.png")
+    blurred = base.filter(ImageFilter.GaussianBlur(radius=1.0))
+    blurred.save(f"./graphs/{accession_number}.png")
 
 
 number = 1  # ファイル名に使う通し番号
@@ -123,8 +126,8 @@ number = 1  # ファイル名に使う通し番号
 with open("./gpcr_labels.csv", "w", encoding="utf-8", newline="") as csv_file:  # ラベルをCSVファイルに保存
     csv_writer = csv.writer(csv_file)
 
-    for filename in filenames:
-        print(f"\033[33m[{filename}]\033[0m")
+    for filename in tqdm(filenames):
+        # print(f"\033[33m[{filename}]\033[0m")
 
         class_name = filename.split("Class")[1][0]  # クラス名を取得
 
@@ -134,7 +137,7 @@ with open("./gpcr_labels.csv", "w", encoding="utf-8", newline="") as csv_file:  
                 seq = record.seq  # アミノ酸配列を取得
 
                 if check_valid_seq(seq):  # 有効なアミノ酸配列かどうかを判定する
-                    print(f"\033[34m[{accession_number}]\033[0m")
+                    # print(f"\033[34m[{accession_number}]\033[0m")
 
                     generate_graph(seq, number, size, padding)  # グラフを保存
                     csv_writer.writerow([number, class_name, accession_number])  # 一応アクセッション番号も含めて保存
