@@ -118,7 +118,7 @@ def generate_graph(seq, accession_number, size, padding):
         draw.line([(start["x"], start["y"]), (end["x"], end["y"])], fill=255, width=3)
 
     blurred = base.filter(ImageFilter.GaussianBlur(radius=1.0))
-    blurred.save(f"./graphs/{accession_number}.png")
+    blurred.save(f"./graphs/default/{accession_number}.png")
 
 
 number = 1  # ファイル名に使う通し番号
