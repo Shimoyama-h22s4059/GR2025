@@ -9,8 +9,9 @@ import os
 
 
 dir_path = "./data/gds_dataset"  # データセットの場所
-save_path = "./graphs/gradation"  # グラフ表示画像の保存先
+save_path = "./graphs/gradation2"  # グラフ表示画像の保存先
 filenames = [os.path.join(dir_path, file) for file in os.listdir(dir_path) if os.path.isfile(os.path.join(dir_path, file))]  # .txt のみ抽出
+filenames.sort()
 
 amino_vec = {
     "A": {"x":  0.99019942, "y": 2.29554027},
@@ -166,7 +167,7 @@ def generate_graph(seq, accession_number, size, padding, width):
 
     for c in seq:
         x += amino_vec[c]["x"]
-        y += amino_vec[c]["y"]
+        y += amino_vec[c]["y"]  # 人間が見るXY平面にする
 
         points.append({"x": x, "y": y})
 
@@ -176,7 +177,7 @@ def generate_graph(seq, accession_number, size, padding, width):
     mapped_points = [
         {
             "x": map_range(point["x"], x_min, x_max, padding, (size - padding)),
-            "y": map_range(point["y"], y_min, y_max, padding, (size - padding))
+            "y": map_range(point["y"], y_min, y_max, padding, (size - padding))  # xy 平面にするために反転
         }
         for point in points
     ]
@@ -213,6 +214,9 @@ with open("./gpcr_labels.csv", "w", encoding="utf-8", newline="") as csv_file:  
 
                 if check_valid_seq(seq):  # 有効なアミノ酸配列かどうかを判定する
                     # print(f"\033[34m[{accession_number}]\033[0m")
+                    
+                    if number == 1:
+                        print(len(seq))
 
                     generate_graph(seq, number, size, padding, linewidth)  # グラフを保存
                     csv_writer.writerow([number, class_name, accession_number])  # 一応アクセッション番号も含めて保存
