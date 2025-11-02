@@ -15,6 +15,7 @@
 
 ## 使用したTransformerモデル
 - [`google/vit-base-patch16-224-in21k`](https://huggingface.co/google/vit-base-patch16-224-in21k)
+- [`openai/clip-vit-base-patch16`](https://huggingface.co/openai/clip-vit-base-patch16)
 
 ## ハイパーパラメータ調整
 
@@ -93,8 +94,19 @@
 | Batch Size | Epochs | Learning Rate | model                               | Avg Train Loss | Avg Val Loss | Avg Accuracy | Avg Macro Precision | Avg Macro Recall | Avg Macro F1 |
 |-----------:|-------:|--------------:|:------------------------------------|---------------:|-------------:|-------------:|--------------------:|-----------------:|-------------:|
 |         16 |     20 |          5E-5 | `google/vit-base-patch16-224-in21k` |       0.008640 |     0.197400 |     0.970061 |            0.811944 |         0.793896 |     0.799329 |
-|         16 |     20 |          5E-5 | `openai/clip-vit-base-patch16     ` |       0.012860 |     0.696410 |     0.925739 |            0.755241 |         0.718175 |     0.731534 |
+|         16 |     20 |          5E-5 | `openai/clip-vit-base-patch16`      |       0.012860 |     0.696410 |     0.925739 |            0.755241 |         0.718175 |     0.731534 |
 
+
+### 空のモデルとの比較
+- 以下のパラメータは固定
+    - 学習率： $5 \times 10^{-5}$
+    - バッチサイズ： $16$
+    - エポック数： $20$
+
+| Batch Size | Epochs | Learning Rate | model       | Avg Train Loss | Avg Val Loss | Avg Accuracy | Avg Macro Precision | Avg Macro Recall | Avg Macro F1 |
+|-----------:|-------:|--------------:|:------------|---------------:|-------------:|-------------:|--------------------:|-----------------:|-------------:|
+|         16 |     20 |          5E-5 | Pre-trained |       0.008640 |     0.197400 |     0.970061 |            0.811944 |         0.793896 |     0.799329 |
+|         16 |     20 |          5E-5 | Empty       |       0.013920 |     0.761775 |     0.916666 |            0.714810 |         0.694702 |     0.695624 |
 
 ## 更新履歴
 
