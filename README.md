@@ -6,16 +6,19 @@
 ## 使用ライブラリ
 以下の通りです
 
-| 名前            | バージョンなど |
-|:----------------|--------------:|
-| Python          |        3.13.3 |
-| PyTorch         |   2.7.1+cu118 |
-| torchvision     |   2.7.1+cu118 |
-| huggingface_hub |        0.33.4 |
+| 名前              |     バージョンなど |
+|:----------------|------------:|
+| Python          |      3.13.3 |
+| PyTorch         | 2.7.1+cu118 |
+| torchvision     | 2.7.1+cu118 |
+| huggingface_hub |      0.33.4 |
 
 ## 使用したTransformerモデル
 - [`google/vit-base-patch16-224-in21k`](https://huggingface.co/google/vit-base-patch16-224-in21k)
 - [`openai/clip-vit-base-patch16`](https://huggingface.co/openai/clip-vit-base-patch16)
+
+## 独自データセットの作成
+- `generating-my-gpcr-dataset.md` を参照してください
 
 ## ハイパーパラメータ調整
 
@@ -108,6 +111,7 @@
 |         16 |     20 |          5E-5 | Pre-trained |       0.008640 |     0.197400 |     0.970061 |            0.811944 |         0.793896 |     0.799329 |
 |         16 |     20 |          5E-5 | Empty       |       0.013920 |     0.761775 |     0.916666 |            0.714810 |         0.694702 |     0.695624 |
 
+
 ## 更新履歴
 
 ### 2025/07/20
@@ -129,3 +133,9 @@
 ### 2025/10/29
 - 一旦ハイパーパラメータの調整をする方針で進める
 - 埋め込みベクトルを取得して画像生成する手法もやる
+
+### 2025/11/18
+- [BIAS-PROFS](https://www.cs.kent.ac.uk/projects/biasprofs/) データセットに色々問題が合った
+- 重複している配列を1つにまとめる
+  - 複数クラスにまたがっている場合は削除
+- [InterPro](https://www.ebi.ac.uk/interpro/) データセットも使うようにする
